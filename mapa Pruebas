@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ruta en Google Maps</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZbVeyA3WmQ6CiRh1lkQgTILrBpMFKHpw"></script>
+    <script>
+      function initMap() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const origin = urlParams.get('origin');
+        const destination = urlParams.get('destination');
+
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: { lat: 37.77, lng: -122.447 }
+        });
+
+        directionsRenderer.setMap(map);
+
+        directionsService.route(
+          {
+            origin: origin,
+            destination: destination,
+            travelMode: 'DRIVING'
+          },
+          (response, status) => {
+            if (status === 'OK') {
+              directionsRenderer.setDirections(response);
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          }
+        );
+      }
+    </script>
+  </head>
+  <body onload="initMap()">
+    <div id="map" style="height: 100%; width: 100%;"></div>
+  </body>
+</html>
